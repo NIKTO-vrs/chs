@@ -1,165 +1,4 @@
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#0c0c0e;color:#b0b8b0;font-family:'Share Tech Mono',monospace;min-height:100vh}
-.scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(180,200,180,0.012) 3px,rgba(180,200,180,0.012) 4px);pointer-events:none;z-index:999}
-input,button{font-family:'Share Tech Mono',monospace}
-
-.login-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90vh;padding:20px}
-.login-box{width:100%;max-width:380px;border:1px solid #1e2e1e;background:#080809;padding:32px 28px}
-.login-ascii{color:#2a4a2a;font-size:10px;line-height:1.3;text-align:center;margin-bottom:20px;white-space:pre}
-.login-title{font-family:'Orbitron',monospace;font-size:22px;color:#3a6a3a;letter-spacing:6px;text-align:center;margin-bottom:4px}
-.login-sub{font-size:10px;color:#2a3a2a;letter-spacing:4px;text-align:center;margin-bottom:28px}
-.login-field{margin-bottom:14px}
-.login-label{font-size:10px;color:#2a4a2a;letter-spacing:3px;margin-bottom:6px;display:block}
-.login-input{width:100%;background:#050506;border:1px solid #1a2a1a;color:#5a8a5a;font-size:13px;padding:10px 12px;outline:none;transition:border .2s}
-.login-input:focus{border-color:#2a5a2a;color:#7aaa7a}
-.login-input::placeholder{color:#1e2e1e}
-.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:20px}
-.rl-btn{background:#050506;border:1px solid #161616;color:#2a3a2a;font-size:10px;padding:8px 6px;cursor:pointer;transition:all .15s;letter-spacing:1px;text-align:center}
-.rl-btn:hover{border-color:#2a4a2a;color:#4a6a4a}
-.rl-btn.sel{border-color:var(--rc);color:var(--rc);background:var(--rb)}
-.login-btn{width:100%;background:#0a150a;border:1px solid #1e3a1e;color:#3a6a3a;font-size:12px;padding:11px;cursor:pointer;letter-spacing:4px;transition:all .2s;margin-top:4px}
-.login-btn:hover{background:#0f200f;color:#5a9a5a;border-color:#2a5a2a}
-.login-err{font-size:11px;color:#6a2a2a;text-align:center;margin-top:10px;min-height:16px;letter-spacing:1px}
-.blink{animation:blink 1s step-end infinite}
-@keyframes blink{50%{opacity:0}}
-.typing-line{font-size:12px;color:#1e3e1e;text-align:center;margin-top:16px;min-height:18px}
-
-.app{display:none;flex-direction:column;min-height:100vh}
-.topbar{background:#060607;border-bottom:1px solid #141a14;padding:6px 14px;display:flex;align-items:center;gap:10px;font-size:10px;color:#1e2e1e}
-.dots{display:flex;gap:5px}.dot{width:8px;height:8px;border-radius:50%}
-.dot-r{background:#3a1a1a}.dot-y{background:#3a3a1a}.dot-g{background:#1a3a1a}
-.topbar-mid{margin:0 auto;font-family:'Orbitron',monospace;font-size:13px;color:#2a5a2a;letter-spacing:5px}
-.topbar-right{font-size:10px;color:#1e2e1e;display:flex;align-items:center;gap:12px}
-.me-badge{padding:2px 8px;border:1px solid;font-size:10px;letter-spacing:1px}
-
-.layout{display:grid;grid-template-columns:180px 1fr;flex:1;border-left:1px solid #111a11;border-right:1px solid #111a11}
-@media(max-width:540px){.layout{grid-template-columns:1fr}}
-.sidebar{background:#070708;border-right:1px solid #111a11;display:flex;flex-direction:column}
-.sid-sect{padding:10px 10px 6px;border-bottom:1px solid #0f140f}
-.sid-label{font-size:9px;color:#1e2e1e;letter-spacing:3px;margin-bottom:6px}
-.user-item{padding:6px 8px;display:flex;align-items:center;gap:7px;cursor:default}
-.uavatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;border:1px solid}
-.uname{font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.urole{font-size:8px;letter-spacing:1px;margin-top:1px}
-.ch-item{padding:6px 10px;font-size:11px;cursor:pointer;color:#1e3e1e;transition:all .15s;display:flex;align-items:center;gap:6px;letter-spacing:1px}
-.ch-item:hover{color:#3a6a3a;background:#0a120a}
-.ch-item.active{color:#4a8a4a;background:#0a150a;border-left:2px solid #2a5a2a}
-
-.chat-col{display:flex;flex-direction:column;background:#080809}
-.chat-head{padding:9px 14px;border-bottom:1px solid #0f180f;display:flex;align-items:center;justify-content:space-between;background:#070708}
-.ch-title-txt{font-family:'Orbitron',monospace;font-size:11px;color:#3a6a3a;letter-spacing:3px}
-.ch-info{font-size:9px;color:#1a2a1a;letter-spacing:1px}
-.messages{flex:1;overflow-y:auto;padding:10px 14px;min-height:300px;max-height:340px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin;scrollbar-color:#1a2a1a transparent}
-.msg{display:flex;gap:9px;align-items:flex-start}
-.msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;border:1px solid}
-.msg-body{flex:1}
-.msg-hdr{display:flex;align-items:center;gap:6px;margin-bottom:2px;flex-wrap:wrap}
-.msg-nick{font-size:11px;font-weight:700}
-.msg-rbadge{font-size:8px;padding:1px 5px;border-radius:1px;border:1px solid currentColor;letter-spacing:1px}
-.msg-ts{font-size:9px;color:#1a2a1a;margin-left:auto}
-.msg-txt{font-size:11px;color:#3a4a3a;line-height:1.65}
-.msg-txt code{color:#4a8aaa;background:#0a1520;padding:1px 4px}
-.msg-txt .cmd{color:#6a9a5a}
-.sys{text-align:center;font-size:9px;color:#1a2a1a;padding:3px 0;letter-spacing:2px}
-
-.input-area{border-top:1px solid #0f180f;padding:10px 14px;background:#070708}
-.role-row{display:flex;gap:5px;margin-bottom:8px;flex-wrap:wrap}
-.r-btn{font-family:'Share Tech Mono',monospace;font-size:9px;padding:3px 8px;border:1px solid #141414;background:transparent;cursor:pointer;transition:all .15s;letter-spacing:1px;color:#1e2e1e}
-.r-btn:hover{color:#3a5a3a;border-color:#1e3e1e}
-.r-btn.sel{border-color:var(--rc);color:var(--rc);background:var(--rb)}
-.irow{display:flex;gap:7px}
-.m-in{flex:1;background:#050506;border:1px solid #111a11;color:#5a8a5a;font-size:11px;padding:7px 10px;outline:none;transition:border .15s}
-.m-in:focus{border-color:#1e3e1e}
-.m-in::placeholder{color:#161e16}
-.s-btn{background:#080f08;border:1px solid #1a2a1a;color:#2a5a2a;font-size:10px;padding:7px 14px;cursor:pointer;letter-spacing:2px;transition:all .15s;white-space:nowrap}
-.s-btn:hover{background:#0d180d;color:#4a8a4a;border-color:#2a4a2a}
-
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#0a0f0a;border-top:1px solid #0f140f}
-.stat-b{background:#070708;padding:10px;text-align:center}
-.stat-n{font-family:'Orbitron',monospace;font-size:16px;color:#2a5a2a}
-.stat-l{font-size:9px;color:#1a2a1a;letter-spacing:2px;margin-top:2px}
-.footer{padding:10px;text-align:center;font-size:9px;color:#141e14;letter-spacing:3px;background:#060607;border-top:1px solid #0d120d}
-</style>
-
-<div class="scanlines"></div>
-
-<div id="loginScreen" class="login-wrap">
-  <div class="login-box">
-    <div class="login-ascii">
- ██████╗██╗  ██╗███████╗
-██╔════╝██║  ██║██╔════╝
-██║     ███████║███████╗
-██║     ██╔══██║╚════██║
-╚██████╗██║  ██║███████║
- ╚═════╝╚═╝  ╚═╝╚══════╝</div>
-    <div class="login-title">CHS</div>
-    <div class="login-sub">CYBER HACKER STATION</div>
-    <div class="login-field">
-      <span class="login-label">// IDENTITY</span>
-      <input class="login-input" id="loginNick" placeholder="enter_nickname" maxlength="18" autocomplete="off" />
-    </div>
-    <div class="login-field">
-      <span class="login-label">// SELECT RANK</span>
-      <div class="role-grid" id="loginRoleGrid"></div>
-    </div>
-    <button class="login-btn" onclick="doLogin()">[ CONNECT TO CHS ]</button>
-    <div class="login-err" id="loginErr"></div>
-    <div class="typing-line" id="typingLine"></div>
-  </div>
-</div>
-
-<div id="appScreen" class="app">
-  <div class="topbar">
-    <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-    <span class="topbar-mid">CHS</span>
-    <div class="topbar-right">
-      <span id="meTopBadge"></span>
-      <span style="color:#1a2a1a">E2E:ON · TOR:ACTIVE</span>
-    </div>
-  </div>
-  <div class="layout">
-    <div class="sidebar">
-      <div class="sid-sect">
-        <div class="sid-label" id="onlineLabel">-- ONLINE --</div>
-        <div id="userList"></div>
-      </div>
-      <div class="sid-sect" style="flex:1">
-        <div class="sid-label">// CHANNELS</div>
-        <div class="ch-item active" id="ch-general" onclick="switchCh('general')"><i class="ti ti-terminal-2" style="font-size:12px" aria-hidden="true"></i>general</div>
-        <div class="ch-item" id="ch-web" onclick="switchCh('web')"><i class="ti ti-world" style="font-size:12px" aria-hidden="true"></i>web-pwn</div>
-        <div class="ch-item" id="ch-net" onclick="switchCh('net')"><i class="ti ti-network" style="font-size:12px" aria-hidden="true"></i>net-recon</div>
-        <div class="ch-item" id="ch-ctf" onclick="switchCh('ctf')"><i class="ti ti-flag" style="font-size:12px" aria-hidden="true"></i>ctf-lab</div>
-        <div class="ch-item" id="ch-re" onclick="switchCh('re')"><i class="ti ti-settings-2" style="font-size:12px" aria-hidden="true"></i>rev-eng</div>
-        <div class="ch-item" id="ch-ops" onclick="switchCh('ops')"><i class="ti ti-shield" style="font-size:12px" aria-hidden="true"></i>ops-sec</div>
-      </div>
-    </div>
-    <div class="chat-col">
-      <div class="chat-head">
-        <span class="ch-title-txt" id="chTitle"># GENERAL</span>
-        <span class="ch-info" id="chInfo">encrypted · 7 nodes</span>
-      </div>
-      <div class="messages" id="messages"></div>
-      <div class="input-area">
-        <div style="font-size:9px;color:#1a2a1a;letter-spacing:3px;margin-bottom:6px">// RANK:</div>
-        <div class="role-row" id="chatRoleRow"></div>
-        <div class="irow">
-          <input class="m-in" id="msgIn" placeholder="> type payload..." maxlength="200" />
-          <button class="s-btn" onclick="sendMsg()">SEND &gt;</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="stats-row">
-    <div class="stat-b"><div class="stat-n" id="stOnline">0</div><div class="stat-l">NODES</div></div>
-    <div class="stat-b"><div class="stat-n" id="stMsgs">0</div><div class="stat-l">PACKETS</div></div>
-    <div class="stat-b"><div class="stat-n">6</div><div class="stat-l">CHANNELS</div></div>
-    <div class="stat-b"><div class="stat-n">5</div><div class="stat-l">RANKS</div></div>
-  </div>
-  <div class="footer">// CHS — CYBER HACKER STATION // EDUCATIONAL USE ONLY // STAY ETHICAL //</div>
-</div>
-
+```html
 <script>
 const ROLES={
   ghost:  {label:'GHOST',   color:'#4a5a4a',border:'#2a3a2a',bg:'#0a0f0a'},
@@ -241,7 +80,8 @@ function initLoginRoles(){
   Object.entries(ROLES).forEach(([k,r])=>{
     const b=document.createElement('button');
     b.className='rl-btn'+(k===selLoginRole?' sel':'');
-    b.style.setProperty('--rc',r.color);b.style.setProperty('--rb',r.bg);
+    b.style.setProperty('--rc',r.color);
+    b.style.setProperty('--rb',r.bg);
     b.textContent=r.label+' — '+({ghost:'تازه‌وارد',noob:'مبتدی',hacker:'هکر',elite:'نخبه',phantom:'ادمین'}[k]);
     b.onclick=()=>{selLoginRole=k;initLoginRoles()};
     g.appendChild(b);
@@ -250,109 +90,263 @@ function initLoginRoles(){
 
 let typeLines=['> initializing CHS...','> loading cipher suite...','> awaiting identity...'];
 let tli=0,tci=0;
+
 function typeEffect(){
   const el=document.getElementById('typingLine');
   if(!el)return;
-  if(tci<typeLines[tli].length){el.textContent=typeLines[tli].substring(0,++tci);setTimeout(typeEffect,40);}
-  else{setTimeout(()=>{tli=(tli+1)%typeLines.length;tci=0;typeEffect();},1600);}
+
+  if(tci<typeLines[tli].length){
+    el.textContent=typeLines[tli].substring(0,++tci);
+    setTimeout(typeEffect,40);
+  } else {
+    setTimeout(()=>{
+      tli=(tli+1)%typeLines.length;
+      tci=0;
+      typeEffect();
+    },1600);
+  }
 }
 
 function doLogin(){
   const n=document.getElementById('loginNick').value.trim();
   const err=document.getElementById('loginErr');
-  if(!n){err.textContent='// ERROR: identity required';return;}
-  if(n.length<2){err.textContent='// ERROR: min 2 chars';return;}
-  if(BOTS.some(b=>b.nick.toLowerCase()===n.toLowerCase())){err.textContent='// ERROR: identity taken';return;}
-  myNick=n; myRole=selLoginRole;
+
+  if(!n){
+    err.textContent='// ERROR: identity required';
+    return;
+  }
+
+  if(n.length<2){
+    err.textContent='// ERROR: min 2 chars';
+    return;
+  }
+
+  if(BOTS.some(b=>b.nick.toLowerCase()===n.toLowerCase())){
+    err.textContent='// ERROR: identity taken';
+    return;
+  }
+
+  myNick=n;
+  myRole=selLoginRole;
+
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('appScreen').style.display='flex';
+
   initApp();
 }
 
 function initApp(){
   const r=ROLES[myRole];
-  document.getElementById('meTopBadge').innerHTML=`<span class="me-badge" style="color:${r.color};border-color:${r.border}">${myNick} [${r.label}]</span>`;
+
+  document.getElementById('meTopBadge').innerHTML=
+  `<span class="me-badge" style="color:${r.color};border-color:${r.border}">
+    ${myNick} [${r.label}]
+  </span>`;
+
   renderUserList();
   renderChatRoles();
   loadCh('general');
-  document.getElementById('msgIn').addEventListener('keydown',e=>{if(e.key==='Enter')sendMsg();});
+
+  document.getElementById('msgIn').addEventListener('keydown',e=>{
+    if(e.key==='Enter')sendMsg();
+  });
+
   startOnlineFlicker();
 }
 
 function renderUserList(){
   const ul=document.getElementById('userList');
+
   ul.innerHTML='';
+
   const r=ROLES[myRole];
+
   const me=document.createElement('div');
+
   me.className='user-item';
-  me.innerHTML=`<div class="uavatar" style="color:${r.color};border-color:${r.border};background:${r.bg}">${myNick.substring(0,2).toUpperCase()}</div><div><div class="uname" style="color:${r.color}">${myNick}</div><div class="urole" style="color:${r.border}">${r.label}</div></div>`;
+
+  me.innerHTML=
+  `<div class="uavatar"
+    style="color:${r.color};border-color:${r.border};background:${r.bg}">
+    ${myNick.substring(0,2).toUpperCase()}
+  </div>
+
+  <div>
+    <div class="uname" style="color:${r.color}">
+      ${myNick}
+    </div>
+
+    <div class="urole" style="color:${r.border}">
+      ${r.label}
+    </div>
+  </div>`;
+
   ul.appendChild(me);
+
   BOTS.forEach(b=>{
     const br=ROLES[b.role];
+
     const d=document.createElement('div');
+
     d.className='user-item';
-    d.innerHTML=`<div class="uavatar" style="color:${br.color};border-color:${br.border};background:${br.bg}">${b.nick.substring(0,2).toUpperCase()}</div><div><div class="uname" style="color:${br.color}">${b.nick}</div><div class="urole" style="color:${br.border}">${br.label}</div></div>`;
+
+    d.innerHTML=
+    `<div class="uavatar"
+      style="color:${br.color};border-color:${br.border};background:${br.bg}">
+      ${b.nick.substring(0,2).toUpperCase()}
+    </div>
+
+    <div>
+      <div class="uname" style="color:${br.color}">
+        ${b.nick}
+      </div>
+
+      <div class="urole" style="color:${br.border}">
+        ${br.label}
+      </div>
+    </div>`;
+
     ul.appendChild(d);
   });
+
   const total=BOTS.length+1;
+
   document.getElementById('onlineLabel').textContent=`-- ${total} ONLINE --`;
   document.getElementById('stOnline').textContent=total;
 }
 
 function renderChatRoles(){
   const row=document.getElementById('chatRoleRow');
+
   row.innerHTML='';
+
   Object.entries(ROLES).forEach(([k,r])=>{
     const b=document.createElement('button');
+
     b.className='r-btn'+(k===myRole?' sel':'');
-    b.style.setProperty('--rc',r.color);b.style.setProperty('--rb',r.bg);
+
+    b.style.setProperty('--rc',r.color);
+    b.style.setProperty('--rb',r.bg);
+
     b.textContent=r.label;
-    b.onclick=()=>{myRole=k;renderChatRoles();renderUserList();};
+
+    b.onclick=()=>{
+      myRole=k;
+      renderChatRoles();
+      renderUserList();
+    };
+
     row.appendChild(b);
   });
 }
 
-function ts(){const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}
+function ts(){
+  const d=new Date();
+
+  return String(d.getHours()).padStart(2,'0')+':'+
+         String(d.getMinutes()).padStart(2,'0');
+}
 
 function appendMsg(nick,role,txt,time,sys){
   const box=document.getElementById('messages');
+
   if(sys){
-    const d=document.createElement('div');d.className='sys';d.textContent=txt;box.appendChild(d);
+    const d=document.createElement('div');
+
+    d.className='sys';
+    d.textContent=txt;
+
+    box.appendChild(d);
   } else {
     const r=ROLES[role]||ROLES.ghost;
-    const d=document.createElement('div');d.className='msg';
-    d.innerHTML=`<div class="msg-av" style="color:${r.color};border-color:${r.border};background:${r.bg}">${nick.substring(0,2).toUpperCase()}</div><div class="msg-body"><div class="msg-hdr"><span class="msg-nick" style="color:${r.color}">${nick}</span><span class="msg-rbadge" style="color:${r.color}">${r.label}</span><span class="msg-ts">${time||ts()}</span></div><div class="msg-txt">${txt}</div></div>`;
+
+    const d=document.createElement('div');
+
+    d.className='msg';
+
+    d.innerHTML=
+    `<div class="msg-av"
+      style="color:${r.color};border-color:${r.border};background:${r.bg}">
+      ${nick.substring(0,2).toUpperCase()}
+    </div>
+
+    <div class="msg-body">
+      <div class="msg-hdr">
+        <span class="msg-nick" style="color:${r.color}">
+          ${nick}
+        </span>
+
+        <span class="msg-rbadge" style="color:${r.color}">
+          ${r.label}
+        </span>
+
+        <span class="msg-ts">
+          ${time||ts()}
+        </span>
+      </div>
+
+      <div class="msg-txt">${txt}</div>
+    </div>`;
+
     box.appendChild(d);
-    msgCount++;document.getElementById('stMsgs').textContent=msgCount;
+
+    msgCount++;
+
+    document.getElementById('stMsgs').textContent=msgCount;
   }
+
   box.scrollTop=box.scrollHeight;
 }
 
 function loadCh(ch){
   const box=document.getElementById('messages');
-  box.innerHTML='';msgCount=0;
+
+  box.innerHTML='';
+
+  msgCount=0;
+
   appendMsg('','','-- encrypted channel established --','',true);
-  (SEED[ch]||[]).forEach(m=>appendMsg(m.nick,m.role,m.txt,null));
+
+  (SEED[ch]||[]).forEach(m=>{
+    appendMsg(m.nick,m.role,m.txt,null);
+  });
+
   document.getElementById('stMsgs').textContent=msgCount;
 }
 
 function switchCh(ch){
-  document.querySelectorAll('.ch-item').forEach(e=>e.classList.remove('active'));
-  const el=document.getElementById('ch-'+ch);if(el)el.classList.add('active');
+  document.querySelectorAll('.ch-item').forEach(e=>{
+    e.classList.remove('active');
+  });
+
+  const el=document.getElementById('ch-'+ch);
+
+  if(el)el.classList.add('active');
+
   curCh=ch;
+
   document.getElementById('chTitle').textContent=CHS[ch].title;
   document.getElementById('chInfo').textContent=CHS[ch].info;
+
   loadCh(ch);
 }
 
 function sendMsg(){
   const el=document.getElementById('msgIn');
-  const txt=el.value.trim();if(!txt)return;
+
+  const txt=el.value.trim();
+
+  if(!txt)return;
+
   appendMsg(myNick,myRole,txt,ts());
+
   el.value='';
+
   setTimeout(()=>{
     const b=BOTS[Math.floor(Math.random()*BOTS.length)];
+
     const rep=BOT_REPLIES[Math.floor(Math.random()*BOT_REPLIES.length)];
+
     appendMsg(b.nick,b.role,rep,ts());
   },900+Math.random()*2000);
 }
@@ -360,15 +354,24 @@ function sendMsg(){
 function startOnlineFlicker(){
   setInterval(()=>{
     const base=BOTS.length+1;
+
     const n=base+Math.floor(Math.random()*3)-1;
+
     const safe=Math.max(base,n);
+
     document.getElementById('onlineLabel').textContent=`-- ${safe} ONLINE --`;
+
     document.getElementById('stOnline').textContent=safe;
   },5000);
 }
 
 initLoginRoles();
 typeEffect();
-document.getElementById('loginNick').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-<script type="module" src="script.js"></script>
+
+document.getElementById('loginNick').addEventListener('keydown',e=>{
+  if(e.key==='Enter')doLogin();
+});
 </script>
+
+<script type="module" src="script.js"></script>
+```
